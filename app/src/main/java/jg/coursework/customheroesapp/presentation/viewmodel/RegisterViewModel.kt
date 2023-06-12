@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jg.coursework.customheroesapp.data.dto.AuthResponseDTO
 import jg.coursework.customheroesapp.data.dto.LoginDTO.LoginRequestDTO
@@ -63,6 +64,8 @@ class RegisterViewModel @Inject constructor(
                     customHeroesRepository.register(RegisterRequestDTO(login = registerState.emailInput, password = registerState.passwordInput))
                 _authState.value = Resource.success(registerResponse.body())
                 sharedPreferences.edit().putString("token", registerResponse.body()?.accessToken).apply()
+                val me = customHeroesRepository.getMe("xd").body()
+                sharedPreferences.edit().putString("user", Gson().toJson(me)).apply()
             } catch (e: Exception) {
                 _authState.value = Resource.error(e.message ?: "Возникла ошибка")
             }

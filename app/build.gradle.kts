@@ -1,8 +1,12 @@
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id ("kotlin-parcelize")
+
+
 }
 
 android {
@@ -49,7 +53,11 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+
 }
+
+
 
 dependencies {
 
@@ -94,6 +102,25 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
+
+    // coil
+    implementation("io.coil-kt:coil-compose:1.3.2")
+
+    // minio
+    implementation ("io.minio:minio:8.4.3")
+
+    // https://mvnrepository.com/artifact/javax.xml.parsers/jaxp-api
+    implementation("javax.xml.parsers:jaxp-api:1.4.5")
+
+// https://mvnrepository.com/artifact/com.fasterxml.woodstox/woodstox-core
+    implementation("com.fasterxml.woodstox:woodstox-core:6.5.1")
+
+// https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-parcelize-runtime
+    implementation("org.jetbrains.kotlin:kotlin-parcelize-runtime:1.9.0-Beta")
+
+
+
+
 
 
 

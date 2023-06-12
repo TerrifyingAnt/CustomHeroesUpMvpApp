@@ -50,9 +50,6 @@ fun Navigation() {
                 }
             )
         }
-//        composable(ScreenRoutes.CatalogScreen.route) {
-//            CatalogScreen()
-//        }
     }
 }
 

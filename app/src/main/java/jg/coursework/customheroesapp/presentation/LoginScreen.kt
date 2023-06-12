@@ -45,9 +45,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import jg.coursework.customheroesapp.R
+import jg.coursework.customheroesapp.data.dto.User
 import jg.coursework.customheroesapp.presentation.components.AuthButton
 import jg.coursework.customheroesapp.presentation.components.TextEntryModule
 import jg.coursework.customheroesapp.presentation.viewmodel.LoginViewModel
+import jg.coursework.customheroesapp.presentation.viewmodel.UserViewModel
 import jg.coursework.customheroesapp.ui.theme.CustomHeroesOrange
 import jg.coursework.customheroesapp.util.Resource
 
@@ -55,24 +57,35 @@ import jg.coursework.customheroesapp.util.Resource
 fun LoginScreen(
     onLoginSuccessNavigation: () -> Unit,
     onNavigationToRegisterScreen: () -> Unit,
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    userViewModel: UserViewModel = hiltViewModel()
 ) {
 
     val authState by loginViewModel.authState.collectAsState()
 
+    val meState by userViewModel.meState.collectAsState()
     val surfaceVisible = remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    LaunchedEffect(authState) {
-        when (authState.status) {
+    LaunchedEffect(meState.status) {
+        userViewModel.getRemoteMe()
+        when(meState.status) {
             Resource.Status.SUCCESS -> {
                 onLoginSuccessNavigation()
             }
-            Resource.Status.ERROR ->
-                Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
-
+            Resource.Status.ERROR -> {}
             Resource.Status.LOADING -> {}
         }
+    }
+
+    when (authState.status) {
+        Resource.Status.SUCCESS -> {
+            onLoginSuccessNavigation()
+        }
+        Resource.Status.ERROR ->
+            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
+
+        Resource.Status.LOADING -> {}
     }
 
     Box(

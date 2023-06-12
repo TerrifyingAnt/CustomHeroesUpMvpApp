@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jg.coursework.customheroesapp.data.dto.LoginDTO.LoginRequestDTO
 import jg.coursework.customheroesapp.data.dto.AuthResponseDTO
@@ -51,13 +52,23 @@ class LoginViewModel @Inject constructor(
             try {
                 val loginResponse =
                     customHeroesRepository.login(LoginRequestDTO(loginState.emailInput, loginState.passwordInput))
-                _authState.value = Resource.success(loginResponse.body())
-                sharedPreferences.edit().putString("token", loginResponse.body()?.accessToken).apply()
+                if(loginResponse.code() == 200) {
+                    _authState.value = Resource.success(loginResponse.body())
+                    sharedPreferences.edit().putString("token", loginResponse.body()?.accessToken)
+                        .apply()
+                    val me = customHeroesRepository.getMe("xd").body()
+                    sharedPreferences.edit().putString("user", Gson().toJson(me)).apply()
+                }
+                else {
+                    _authState.value = Resource.error( "Возникла ошибка")
+                }
             } catch (e: Exception) {
                 _authState.value = Resource.error(e.message ?: "Возникла ошибка")
             }
         }
     }
+
+
 
     private fun checkInputValidation() {
         val validationResult = validateLoginInputUseCase(

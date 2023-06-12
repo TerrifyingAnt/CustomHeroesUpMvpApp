@@ -16,6 +16,7 @@ import jg.coursework.customheroesapp.domain.use_case.ValidateRegisterInputUseCas
 import jg.coursework.customheroesapp.util.Constant
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.nio.charset.Charset
 import javax.inject.Singleton
 
 @Module
@@ -42,7 +43,9 @@ object AppModule {
             .build()
 
     @Provides
-    fun provideGson(): Gson = GsonBuilder().create()
+    fun provideGson(): Gson = GsonBuilder()
+        .disableHtmlEscaping()
+        .create()
 
     @Provides
     @Singleton

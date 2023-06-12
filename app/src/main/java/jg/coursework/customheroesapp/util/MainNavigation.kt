@@ -3,16 +3,13 @@
 package jg.coursework.customheroesapp.util
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -31,24 +28,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.google.gson.Gson
+import jg.coursework.customheroesapp.data.dto.CatalogDTO.FigureDTO
+import jg.coursework.customheroesapp.presentation.BasketScreen
 import jg.coursework.customheroesapp.presentation.CatalogScreen
-import jg.coursework.customheroesapp.presentation.LoginScreen
-import jg.coursework.customheroesapp.presentation.RegisterScreen
+import jg.coursework.customheroesapp.presentation.FigureDetailScreen
+import jg.coursework.customheroesapp.presentation.ProfileScreen
 import jg.coursework.customheroesapp.presentation.components.BottomMenuItem
 import jg.coursework.customheroesapp.ui.theme.CustomHeroesOrange
 
 import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainNavigation() {
     val navController = rememberNavController()
 
     Scaffold(
-        modifier = Modifier.fillMaxSize().background(CustomHeroesOrange),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(CustomHeroesOrange),
         topBar = {
             TopAppBar(
                 title = {
@@ -66,22 +71,37 @@ fun MainNavigation() {
             startDestination = MainScreenRoutes.CatalogScreen.route
         ) {
             composable(MainScreenRoutes.CatalogScreen.route) {
-                CatalogScreen()
+                CatalogScreen(navController)
             }
+
+            composable(
+                route = MainScreenRoutes.FigureDetailScreen.route,
+                arguments = listOf(navArgument("FigureModel") {
+                    type = NavType.IntType
+                })
+            ) {
+                backStackEntry ->
+                val figureModelId = backStackEntry.arguments?.getInt("FigureModel")
+                FigureDetailScreen(figureModelId!!)
+
+            }
+
+
             composable(MainScreenRoutes.BasketScreen.route) {
-                // TODO
+                BasketScreen(navController)
             }
             composable(MainScreenRoutes.ProfileScreen.route) {
-                // TODO
+                ProfileScreen()
             }
         }
     }
 }
 
 sealed class MainScreenRoutes(val route: String) {
-    object CatalogScreen: ScreenRoutes("catalog_screen")
-    object BasketScreen: ScreenRoutes("basket_screen")
-    object ProfileScreen: ScreenRoutes("profile_screen")
+    object CatalogScreen: MainScreenRoutes("catalog_screen")
+    object FigureDetailScreen: MainScreenRoutes("figure_detail_screen/{FigureModel}")
+    object BasketScreen: MainScreenRoutes("basket_screen")
+    object ProfileScreen: MainScreenRoutes("profile_screen")
 }
 
 @Composable

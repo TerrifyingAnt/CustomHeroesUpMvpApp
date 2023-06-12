@@ -7,11 +7,18 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
+import io.minio.MinioClient
 
 object Constant {
+
+    
     const val BASE_URL = "http://10.0.2.2:8081/"
-
-
+    const val BUCKET_NAME = "customheroesbacket"
+    const val BASE_MINIO_URL = "http://10.0.0.2:9001/customheroesbacket/preview.jpg"
+    val minioClient = MinioClient.builder()
+        .endpoint("http://10.0.2.2:9000/") // Replace with your MinIO server's URL
+        .credentials("<USERNAME>", "<PASSWORD>") // Replace with the root user's credentials
+        .build()
 }
 
 data class BottomNavItem(
