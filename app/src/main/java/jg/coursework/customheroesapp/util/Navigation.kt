@@ -4,14 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import jg.coursework.customheroesapp.MainActivity
-import jg.coursework.customheroesapp.presentation.CatalogScreen
-import jg.coursework.customheroesapp.presentation.LoginScreen
-import jg.coursework.customheroesapp.presentation.RegisterScreen
+import jg.coursework.customheroesapp.presentation.screen.login.LoginScreen
+import jg.coursework.customheroesapp.presentation.screen.registration.RegisterScreen
 
 @Composable
 fun Navigation() {

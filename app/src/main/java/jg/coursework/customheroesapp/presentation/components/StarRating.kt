@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jg.coursework.customheroesapp.ui.theme.CustomHeroesYellow
 
@@ -16,6 +17,26 @@ fun StarRating(rating: Float, maxRating: Int = 5) {
     Row {
         repeat(maxRating) { index ->
             val icon = if (index < rating) {
+                Icons.Default.Star
+            } else {
+                Icons.Default.StarBorder
+            }
+            Icon(
+                icon,
+                contentDescription = null,
+                tint = CustomHeroesYellow,
+                modifier = Modifier.size(50.dp)
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun StarRatingPreview() {
+    Row {
+        repeat(5) { index ->
+            val icon = if (index < 3) {
                 Icons.Default.Star
             } else {
                 Icons.Default.StarBorder

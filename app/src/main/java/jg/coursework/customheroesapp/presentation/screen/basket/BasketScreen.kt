@@ -1,4 +1,4 @@
-package jg.coursework.customheroesapp.presentation
+package jg.coursework.customheroesapp.presentation.screen.basket
 
 import android.app.Activity
 import android.widget.Toast
@@ -30,11 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import jg.coursework.customheroesapp.data.dto.CatalogDTO.CatalogDTO
-import jg.coursework.customheroesapp.domain.model.FigureModel
 import jg.coursework.customheroesapp.presentation.components.AuthButton
 import jg.coursework.customheroesapp.presentation.components.Counter
-import jg.coursework.customheroesapp.presentation.viewmodel.CatalogViewModel
-import jg.coursework.customheroesapp.presentation.viewmodel.UserViewModel
+import jg.coursework.customheroesapp.presentation.screen.catalog.CatalogViewModel
 import jg.coursework.customheroesapp.ui.theme.CustomHeroesOrange
 import jg.coursework.customheroesapp.util.MainScreenRoutes
 import jg.coursework.customheroesapp.util.Resource

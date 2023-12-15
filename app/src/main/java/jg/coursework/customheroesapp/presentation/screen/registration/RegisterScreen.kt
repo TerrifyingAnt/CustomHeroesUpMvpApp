@@ -1,4 +1,4 @@
-package jg.coursework.customheroesapp.presentation
+package jg.coursework.customheroesapp.presentation.screen.registration
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
@@ -45,47 +45,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import jg.coursework.customheroesapp.R
-import jg.coursework.customheroesapp.data.dto.User
 import jg.coursework.customheroesapp.presentation.components.AuthButton
 import jg.coursework.customheroesapp.presentation.components.TextEntryModule
-import jg.coursework.customheroesapp.presentation.viewmodel.LoginViewModel
-import jg.coursework.customheroesapp.presentation.viewmodel.UserViewModel
 import jg.coursework.customheroesapp.ui.theme.CustomHeroesOrange
 import jg.coursework.customheroesapp.util.Resource
 
 @Composable
-fun LoginScreen(
-    onLoginSuccessNavigation: () -> Unit,
-    onNavigationToRegisterScreen: () -> Unit,
-    loginViewModel: LoginViewModel = hiltViewModel(),
-    userViewModel: UserViewModel = hiltViewModel()
+fun RegisterScreen(
+    onRegisterSuccessNavigation: () -> Unit,
+    onNavigationToLoginScreen: () -> Unit,
+    registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
 
-    val authState by loginViewModel.authState.collectAsState()
-
-    val meState by userViewModel.meState.collectAsState()
     val surfaceVisible = remember { mutableStateOf(false) }
+
+    val authState by registerViewModel.authState.collectAsState()
+
     val context = LocalContext.current
 
-    LaunchedEffect(meState.status) {
-        userViewModel.getRemoteMe()
-        when(meState.status) {
+    LaunchedEffect(authState) {
+        when (authState.status) {
             Resource.Status.SUCCESS -> {
-                onLoginSuccessNavigation()
+                onRegisterSuccessNavigation()
             }
-            Resource.Status.ERROR -> {}
+            Resource.Status.ERROR ->
+                Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
+
             Resource.Status.LOADING -> {}
         }
-    }
-
-    when (authState.status) {
-        Resource.Status.SUCCESS -> {
-            onLoginSuccessNavigation()
-        }
-        Resource.Status.ERROR ->
-            Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
-
-        Resource.Status.LOADING -> {}
     }
 
     Box(
@@ -101,7 +88,7 @@ fun LoginScreen(
                     color = Color.White,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.ExtraBold
-                    )
+                )
             }
             Spacer(Modifier.height(5.dp))
             Row(Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.Center) {
@@ -132,7 +119,7 @@ fun LoginScreen(
                         }
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                             Text(
-                                "Войти",
+                                "Зарегистрироваться",
                                 style = MaterialTheme.typography.bodyLarge,
                                 modifier = Modifier.padding(top = 15.dp),
                                 fontSize = 30.sp,
@@ -141,17 +128,22 @@ fun LoginScreen(
                             )
                         }
                     }
-                    LoginContainer(
-                        emailValue = { loginViewModel.loginState.emailInput },
-                        passwordValue = { loginViewModel.loginState.passwordInput },
-                        buttonEnabled = { loginViewModel.loginState.isInputValid },
-                        onEmailChanged = loginViewModel::onEmailInputChange,
-                        onPasswordChanged = loginViewModel::onPasswordInputChange,
-                        onLoginButtonClick = loginViewModel::onLoginClick,
-                        isPasswordShown = { loginViewModel.loginState.isPasswordShown },
-                        onTrailingPasswordIconClick = loginViewModel::onToggleVisualTransformation,
-                        errorHint = { loginViewModel.loginState.errorMessageInput },
-                        isLoading = { loginViewModel.loginState.isLoading },
+
+                    RegisterContainer(
+                        emailValue = { registerViewModel.registerState.emailInput },
+                        passwordValue = { registerViewModel.registerState.passwordInput },
+                        buttonEnabled = { registerViewModel.registerState.isInputValid },
+                        passwordRepeatedValue = { registerViewModel.registerState.passwordRepeatedInput },
+                        onEmailChanged = registerViewModel::onEmailInputChange,
+                        onPasswordChanged = registerViewModel::onPasswordInputChange,
+                        onPasswordRepeatedChanged = registerViewModel::onPasswordRepeatedInputChange,
+                        onButtonClick = registerViewModel::onRegisterClick,
+                        isPasswordShown = { registerViewModel.registerState.isPasswordShown },
+                        isPasswordRepeatedShown = { registerViewModel.registerState.isPasswordRepeatedShown },
+                        onTrailingPasswordIconClick = { registerViewModel.onToggleVisualTransformationPassword() },
+                        onTrailingPasswordRepeatedIconClick = { registerViewModel.onToggleVisualTransformationPasswordRepeated() },
+                        errorHint = { registerViewModel.registerState.errorMessageInput },
+                        isLoading = { registerViewModel.registerState.isLoading },
                         modifier = Modifier.fillMaxWidth()
                     )
                     Column(verticalArrangement = Arrangement.Bottom) {
@@ -160,15 +152,15 @@ fun LoginScreen(
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Text(
-                                "Нет аккаунта?",
+                                "Есть аккаунт?",
                                 style = MaterialTheme.typography.bodyMedium,
                                 modifier = Modifier.padding(bottom = 15.dp)
                             )
                             Text(
-                                "Зарегистрироваться!",
+                                "Войти!",
                                 modifier = Modifier
                                     .clickable {
-                                        onNavigationToRegisterScreen()
+                                        onNavigationToLoginScreen()
                                     }
                                     .padding(bottom = 15.dp),
                                 style = MaterialTheme.typography.bodyMedium,
@@ -181,36 +173,38 @@ fun LoginScreen(
             }
         }
     }
-
     LaunchedEffect(Unit) {
         surfaceVisible.value = true
     }
-
 }
 
+
 @Composable
-fun LoginContainer(
-    emailValue: () -> String,
-    passwordValue: () -> String,
-    buttonEnabled: () -> Boolean,
-    onEmailChanged: (String) -> Unit,
-    onPasswordChanged: (String) -> Unit,
-    onLoginButtonClick: () -> Unit,
-    isPasswordShown: () -> Boolean,
-    onTrailingPasswordIconClick: () -> Unit,
-    errorHint: () -> String?,
-    isLoading: () -> Boolean,
-    modifier: Modifier = Modifier
+fun RegisterContainer(
+    emailValue:() -> String,
+    passwordValue:() -> String,
+    passwordRepeatedValue:() -> String,
+    buttonEnabled:() -> Boolean,
+    onEmailChanged:(String)->Unit,
+    onPasswordChanged:(String)->Unit,
+    onPasswordRepeatedChanged:(String)->Unit,
+    onButtonClick:()->Unit,
+    isPasswordShown: ()->Boolean,
+    isPasswordRepeatedShown: ()->Boolean,
+    onTrailingPasswordIconClick: ()->Unit,
+    onTrailingPasswordRepeatedIconClick: ()->Unit,
+    errorHint:() -> String?,
+    isLoading:() -> Boolean,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
         Column(
             modifier = Modifier.fillMaxHeight(),
             verticalArrangement = Arrangement.Center
         ) {
-
             Text(
                 errorHint() ?: "",
                 style = MaterialTheme.typography.bodySmall,
@@ -218,51 +212,71 @@ fun LoginContainer(
                 color = Color.Red,
                 textAlign = TextAlign.Center
             )
-
             TextEntryModule(
+                modifier = Modifier
+                    .fillMaxWidth(0.8f),
                 description = "Введите почту",
-                modifier = Modifier.fillMaxWidth(0.8f),
                 hint = "xd@xd.xd",
+                leadingIcon = Icons.Default.Email,
                 textValue = emailValue(),
                 textColor = CustomHeroesOrange,
                 cursorColor = CustomHeroesOrange,
                 onValueChanged = onEmailChanged,
                 trailingIcon = null,
-                onTrailingIconClick = null,
-                leadingIcon = Icons.Default.Email
+                onTrailingIconClick = null
             )
 
             TextEntryModule(
-                description = "Введите пароль",
-                modifier = Modifier.fillMaxWidth(0.8f),
+                modifier = Modifier
+                    .fillMaxWidth(0.8f),
+                description = "Пароль",
                 hint = "qwerqwer",
+                leadingIcon = Icons.Default.VpnKey,
                 textValue = passwordValue(),
                 textColor = CustomHeroesOrange,
                 cursorColor = CustomHeroesOrange,
                 onValueChanged = onPasswordChanged,
-                trailingIcon = if(isPasswordShown()) Icons.Default.RemoveRedEye else Icons.Default.VisibilityOff,
-                onTrailingIconClick = onTrailingPasswordIconClick,
-                leadingIcon = Icons.Default.VpnKey,
+                keyboardType = KeyboardType.Password,
                 visualTransformation = if (isPasswordShown()) {
                     VisualTransformation.None
                 } else PasswordVisualTransformation(),
-                keyboardType = KeyboardType.Password
+                trailingIcon = if (isPasswordShown()) Icons.Default.RemoveRedEye else Icons.Default.VisibilityOff,
+                onTrailingIconClick = {
+                    onTrailingPasswordIconClick()
+                }
+            )
+            TextEntryModule(
+                modifier = Modifier
+                    .fillMaxWidth(0.8f),
+                description = "Повторите пароль",
+                hint = "qwerqwer",
+                leadingIcon = Icons.Default.VpnKey,
+                textValue = passwordRepeatedValue(),
+                textColor = CustomHeroesOrange,
+                cursorColor = CustomHeroesOrange,
+                onValueChanged = onPasswordRepeatedChanged,
+                keyboardType = KeyboardType.Password,
+                visualTransformation = if (isPasswordRepeatedShown()) {
+                    VisualTransformation.None
+                } else PasswordVisualTransformation(),
+                trailingIcon = if (isPasswordRepeatedShown()) Icons.Default.RemoveRedEye else Icons.Default.VisibilityOff,
+                onTrailingIconClick = {
+                    onTrailingPasswordRepeatedIconClick()
+                }
             )
             AuthButton(
-                text = "Войти",
+                text = "Заргеистрироваться",
                 backgroundColor = CustomHeroesOrange,
                 contentColor = Color.White,
-                enabled = true,
+                enabled = buttonEnabled(),
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
                     .padding(10.dp)
                     .height(45.dp),
-                isLoading = isLoading(),
-                onButtonClick = onLoginButtonClick
+                onButtonClick = onButtonClick,
+                isLoading = isLoading()
             )
+
         }
     }
 }
-
-
-

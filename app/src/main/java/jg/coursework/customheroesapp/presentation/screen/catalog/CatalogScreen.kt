@@ -1,4 +1,4 @@
-package jg.coursework.customheroesapp.presentation
+package jg.coursework.customheroesapp.presentation.screen.catalog
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -18,20 +18,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
-import com.google.common.base.Utf8
-import com.google.gson.Gson
 
 
 import jg.coursework.customheroesapp.presentation.components.FigureCard
-import jg.coursework.customheroesapp.presentation.viewmodel.CatalogViewModel
-import jg.coursework.customheroesapp.util.MainNavigation
 import jg.coursework.customheroesapp.util.MainScreenRoutes
 import jg.coursework.customheroesapp.util.Resource
-import okio.ByteString.Companion.encode
 
 @Composable
 fun CatalogScreen(navController: NavController, catalogViewModel: CatalogViewModel = hiltViewModel()) {
@@ -78,7 +71,7 @@ fun CatalogScreen(navController: NavController, catalogViewModel: CatalogViewMod
                         ) {
                             val figureModel = catalogViewModel.figureList.value[item]
                             navController.navigate(MainScreenRoutes.FigureDetailScreen.route
-                                .replace("{FigureModel}", "${figureModel.figure.id}")
+                                .replace("{FigureModel}", "${figureModel.id}")
                             )
                         }
                     }

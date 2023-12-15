@@ -112,11 +112,17 @@ dependencies {
     // https://mvnrepository.com/artifact/javax.xml.parsers/jaxp-api
     implementation("javax.xml.parsers:jaxp-api:1.4.5")
 
-// https://mvnrepository.com/artifact/com.fasterxml.woodstox/woodstox-core
+    // https://mvnrepository.com/artifact/com.fasterxml.woodstox/woodstox-core
     implementation("com.fasterxml.woodstox:woodstox-core:6.5.1")
 
-// https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-parcelize-runtime
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-parcelize-runtime
     implementation("org.jetbrains.kotlin:kotlin-parcelize-runtime:1.9.0-Beta")
+
+    // logging interceptor
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
+
+    implementation("androidx.datastore:datastore-preferences:1.0.0-beta01")
+
 
 
 

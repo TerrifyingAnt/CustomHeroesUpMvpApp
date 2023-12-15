@@ -1,9 +1,7 @@
-package jg.coursework.customheroesapp.presentation
+package jg.coursework.customheroesapp.presentation.screen.profile
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,45 +18,39 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.google.gson.Gson
 import jg.coursework.customheroesapp.AuthActivity
 import jg.coursework.customheroesapp.data.dto.OrderDTO.OrderItemDTO
-import jg.coursework.customheroesapp.data.dto.User
-import jg.coursework.customheroesapp.domain.repository.CustomHeroesRepository
-import jg.coursework.customheroesapp.domain.use_case.ValidateLoginInputUseCase
 import jg.coursework.customheroesapp.presentation.components.AuthButton
-import jg.coursework.customheroesapp.presentation.viewmodel.LoginViewModel
-import jg.coursework.customheroesapp.presentation.viewmodel.UserViewModel
 import jg.coursework.customheroesapp.ui.theme.CustomHeroesOrange
-import jg.coursework.customheroesapp.util.MainScreenRoutes
-import jg.coursework.customheroesapp.util.ScreenRoutes
-import javax.inject.Inject
+import jg.coursework.customheroesapp.util.Resource
 
 @Composable
-fun ProfileScreen(viewModel: UserViewModel = hiltViewModel())
+fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel())
 {
     val context = LocalContext.current
     val activity = LocalContext.current as Activity
 
+    val user by viewModel.meState.collectAsState()
+
     LaunchedEffect(key1 = Unit) {
+        viewModel.getMe()
         viewModel.getOrders()
     }
     Column(
         Modifier
             .fillMaxSize()
             .padding(top = 60.dp, bottom = 80.dp)) {
-        val user = viewModel.getMe()
-        if(user != null) {
+        if(user.status == Resource.Status.SUCCESS) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Text(
-                    text = user.login,
+                    text = user.data?.login ?: "",
                     style = MaterialTheme.typography.h5)
             }
         }

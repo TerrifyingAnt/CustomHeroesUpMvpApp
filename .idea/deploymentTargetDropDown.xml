@@ -2,21 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="Counter">
-        <State />
-      </entry>
-      <entry key="StringExtensionTest">
-        <State />
-      </entry>
-      <entry key="ValidateLoginInputUseCaseTest">
-        <State />
-      </entry>
-      <entry key="ValidateLoginInputUseCaseTest.test no email returns ValidationType no email">
-        <State />
-      </entry>
-      <entry key="ValidateRegisterInputUseCaseTest">
-        <State />
-      </entry>
       <entry key="app">
         <State />
       </entry>

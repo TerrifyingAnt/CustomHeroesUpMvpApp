@@ -1,11 +1,11 @@
-package jg.coursework.customheroesapp.data.remote
+package jg.coursework.customheroesapp.data.repository
 
 import jg.coursework.customheroesapp.util.Resource
 import retrofit2.Response
 
 abstract class BaseDataSource {
 
-    protected suspend fun <T> getResult(call: suspend () -> Response<T>): Resource<T> {
+    protected suspend fun <T> safeApiCall(call: suspend () -> Response<T>): Resource<T> {
         try {
             val response = call()
             if (response.isSuccessful) {

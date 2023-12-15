@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.rounded.Message
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,15 +34,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.google.gson.Gson
-import jg.coursework.customheroesapp.data.dto.CatalogDTO.FigureDTO
-import jg.coursework.customheroesapp.presentation.BasketScreen
-import jg.coursework.customheroesapp.presentation.CatalogScreen
-import jg.coursework.customheroesapp.presentation.FigureDetailScreen
-import jg.coursework.customheroesapp.presentation.ProfileScreen
 import jg.coursework.customheroesapp.presentation.components.BottomMenuItem
+import jg.coursework.customheroesapp.presentation.screen.basket.BasketScreen
+import jg.coursework.customheroesapp.presentation.screen.catalog.CatalogScreen
+import jg.coursework.customheroesapp.presentation.screen.figure_detail.FigureDetailScreen
+import jg.coursework.customheroesapp.presentation.screen.profile.ProfileScreen
 import jg.coursework.customheroesapp.ui.theme.CustomHeroesOrange
-
 import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -102,6 +100,8 @@ sealed class MainScreenRoutes(val route: String) {
     object FigureDetailScreen: MainScreenRoutes("figure_detail_screen/{FigureModel}")
     object BasketScreen: MainScreenRoutes("basket_screen")
     object ProfileScreen: MainScreenRoutes("profile_screen")
+
+    object ChatsScreen: MainScreenRoutes("chats_screen")
 }
 
 @Composable
@@ -150,6 +150,7 @@ private fun prepareBottomMenu(): List<BottomMenuItem> {
     bottomMenuItemsList.add(BottomMenuItem(label = "catalog_screen", icon = Icons.Filled.Home))
     bottomMenuItemsList.add(BottomMenuItem(label = "basket_screen", icon = Icons.Filled.ShoppingCart))
     bottomMenuItemsList.add(BottomMenuItem(label = "profile_screen", icon = Icons.Filled.Person))
+    bottomMenuItemsList.add(BottomMenuItem(label = "chats_screen", icon = Icons.Rounded.Message))
 
     return bottomMenuItemsList
 }

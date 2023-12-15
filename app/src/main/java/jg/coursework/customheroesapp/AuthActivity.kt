@@ -36,7 +36,7 @@ class AuthActivity : ComponentActivity() {
                 ) {
                     val systemUiController: SystemUiController = rememberSystemUiController()
                     systemUiController.isSystemBarsVisible = false
-                   Navigation()
+                    Navigation()
                 }
             }
         }
