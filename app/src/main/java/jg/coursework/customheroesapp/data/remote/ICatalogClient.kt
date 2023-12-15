@@ -6,7 +6,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
-interface CustomHeroesCatalogClient {
+interface ICatalogClient {
     @GET("/test/catalog")
     suspend fun getCatalog(): Response<List<CatalogDTO>>
 

@@ -6,10 +6,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import jg.coursework.customheroesapp.data.remote.AuthInterceptor
-import jg.coursework.customheroesapp.data.remote.CustomHeroesAuthClient
-import jg.coursework.customheroesapp.data.remote.CustomHeroesCatalogClient
-import jg.coursework.customheroesapp.data.remote.CustomHeroesOrderClient
-import jg.coursework.customheroesapp.data.remote.CustomHeroesUserClient
+import jg.coursework.customheroesapp.data.remote.IAuthClient
+import jg.coursework.customheroesapp.data.remote.ICatalogClient
+import jg.coursework.customheroesapp.data.remote.IOrderClient
+import jg.coursework.customheroesapp.data.remote.IUserClient
 import jg.coursework.customheroesapp.util.Constant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -42,22 +42,22 @@ object RemoteModule {
 
     @Provides
     @Singleton
-    fun provideCustomHeroesClient(retrofit: Retrofit): CustomHeroesAuthClient =
+    fun provideCustomHeroesClient(retrofit: Retrofit): IAuthClient =
         retrofit.create()
 
     @Provides
     @Singleton
-    fun provideCustomHeroesCatalogClient(retrofit: Retrofit): CustomHeroesCatalogClient =
+    fun provideCustomHeroesCatalogClient(retrofit: Retrofit): ICatalogClient =
         retrofit.create()
 
     @Provides
     @Singleton
-    fun provideCustomHeroesOrderClient(retrofit: Retrofit): CustomHeroesOrderClient =
+    fun provideCustomHeroesOrderClient(retrofit: Retrofit): IOrderClient =
         retrofit.create()
 
     @Provides
     @Singleton
-    fun provideCustomHeroesUserClient(retrofit: Retrofit): CustomHeroesUserClient =
+    fun provideCustomHeroesUserClient(retrofit: Retrofit): IUserClient =
         retrofit.create()
 
 

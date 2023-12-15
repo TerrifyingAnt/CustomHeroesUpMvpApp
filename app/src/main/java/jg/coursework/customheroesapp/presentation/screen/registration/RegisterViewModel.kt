@@ -10,9 +10,9 @@ import jg.coursework.customheroesapp.data.dto.AuthResponseDTO
 import jg.coursework.customheroesapp.data.dto.RegisterDTO.RegisterRequestDTO
 import jg.coursework.customheroesapp.data.local.DataStoreManager
 import jg.coursework.customheroesapp.data.local.TokenManager
-import jg.coursework.customheroesapp.data.repository.CustomHeroesAuthRepository
-import jg.coursework.customheroesapp.data.repository.CustomHeroesUserRepository
 import jg.coursework.customheroesapp.domain.model.RegisterInputValidationType
+import jg.coursework.customheroesapp.domain.repository.IAuthRepository
+import jg.coursework.customheroesapp.domain.repository.IUserRepository
 import jg.coursework.customheroesapp.domain.use_case.ValidateRegisterInputUseCase
 import jg.coursework.customheroesapp.presentation.state.RegisterState
 import jg.coursework.customheroesapp.util.Resource
@@ -24,8 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val validateRegisterInputUseCase: ValidateRegisterInputUseCase,
-    private val customHeroesAuthRepository: CustomHeroesAuthRepository,
-    private val customHeroesUserRepository: CustomHeroesUserRepository,
+    private val customHeroesAuthRepository: IAuthRepository,
+    private val customHeroesUserRepository: IUserRepository,
     private val dataStoreManager: DataStoreManager,
     private val tokenManager: TokenManager
 

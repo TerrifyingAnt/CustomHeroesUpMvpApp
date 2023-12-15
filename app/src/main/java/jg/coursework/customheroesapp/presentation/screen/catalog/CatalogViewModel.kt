@@ -8,10 +8,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jg.coursework.customheroesapp.data.dto.CatalogDTO.CatalogDTO
 import jg.coursework.customheroesapp.data.local.DataStoreManager
 import jg.coursework.customheroesapp.data.network_converters.toDomainListFiguresModel
-import jg.coursework.customheroesapp.data.repository.CustomHeroesCatalogRepository
-import jg.coursework.customheroesapp.data.repository.CustomHeroesOrderRepository
 import jg.coursework.customheroesapp.domain.model.FigureModel
 import jg.coursework.customheroesapp.domain.model.TagModel
+import jg.coursework.customheroesapp.domain.repository.ICatalogRepository
+import jg.coursework.customheroesapp.domain.repository.IOrderRepository
 import jg.coursework.customheroesapp.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,8 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CatalogViewModel @Inject constructor(
-    private val customHeroesCatalogRepository: CustomHeroesCatalogRepository,
-    private val customHeroesOrderRepository: CustomHeroesOrderRepository,
+    private val customHeroesCatalogRepository: ICatalogRepository,
+    private val customHeroesOrderRepository: IOrderRepository,
     private val dataStoreManager: DataStoreManager
 
 ): ViewModel() {

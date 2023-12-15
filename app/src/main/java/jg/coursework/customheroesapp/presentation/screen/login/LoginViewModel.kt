@@ -10,9 +10,9 @@ import jg.coursework.customheroesapp.data.dto.AuthResponseDTO
 import jg.coursework.customheroesapp.data.dto.LoginDTO.LoginRequestDTO
 import jg.coursework.customheroesapp.data.local.DataStoreManager
 import jg.coursework.customheroesapp.data.local.TokenManager
-import jg.coursework.customheroesapp.data.repository.CustomHeroesAuthRepository
-import jg.coursework.customheroesapp.data.repository.CustomHeroesUserRepository
 import jg.coursework.customheroesapp.domain.model.LoginInputValidationType
+import jg.coursework.customheroesapp.domain.repository.IAuthRepository
+import jg.coursework.customheroesapp.domain.repository.IUserRepository
 import jg.coursework.customheroesapp.domain.use_case.ValidateLoginInputUseCase
 import jg.coursework.customheroesapp.presentation.state.LoginState
 import jg.coursework.customheroesapp.util.Resource
@@ -24,8 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val validateLoginInputUseCase: ValidateLoginInputUseCase,
-    private val customHeroesAuthRepository: CustomHeroesAuthRepository,
-    private val customHeroesUserRepository: CustomHeroesUserRepository,
+    private val customHeroesAuthRepository: IAuthRepository,
+    private val customHeroesUserRepository: IUserRepository,
     private val tokenManager: TokenManager,
     private val dataStoreManager: DataStoreManager
     ): ViewModel() {

@@ -9,8 +9,8 @@ import jg.coursework.customheroesapp.data.dto.OrderDTO.OrderItemDTO
 import jg.coursework.customheroesapp.data.dto.User
 import jg.coursework.customheroesapp.data.local.DataStoreManager
 import jg.coursework.customheroesapp.data.local.TokenManager
-import jg.coursework.customheroesapp.data.repository.CustomHeroesOrderRepository
-import jg.coursework.customheroesapp.data.repository.CustomHeroesUserRepository
+import jg.coursework.customheroesapp.domain.repository.IOrderRepository
+import jg.coursework.customheroesapp.domain.repository.IUserRepository
 import jg.coursework.customheroesapp.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,8 +21,8 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
     private val tokenManager: TokenManager,
-    private val customHeroesUserRepository: CustomHeroesUserRepository,
-    private val customHeroesOrderRepository: CustomHeroesOrderRepository
+    private val customHeroesUserRepository: IUserRepository,
+    private val customHeroesOrderRepository: IOrderRepository
 ): ViewModel() {
 
 
