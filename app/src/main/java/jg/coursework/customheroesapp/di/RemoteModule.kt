@@ -5,13 +5,20 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import jg.coursework.customheroesapp.data.local.DataStoreManager
 import jg.coursework.customheroesapp.data.remote.AuthInterceptor
 import jg.coursework.customheroesapp.data.remote.IAuthClient
 import jg.coursework.customheroesapp.data.remote.ICatalogClient
 import jg.coursework.customheroesapp.data.remote.IOrderClient
 import jg.coursework.customheroesapp.data.remote.IUserClient
 import jg.coursework.customheroesapp.data.repository.AuthRepositoryImpl
+import jg.coursework.customheroesapp.data.repository.CatalogRepositoryImpl
+import jg.coursework.customheroesapp.data.repository.OrderRepositoryImpl
+import jg.coursework.customheroesapp.data.repository.UserRepositoryImpl
 import jg.coursework.customheroesapp.domain.repository.IAuthRepository
+import jg.coursework.customheroesapp.domain.repository.ICatalogRepository
+import jg.coursework.customheroesapp.domain.repository.IOrderRepository
+import jg.coursework.customheroesapp.domain.repository.IUserRepository
 import jg.coursework.customheroesapp.util.Constant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -49,8 +56,16 @@ object RemoteModule {
 
     @Provides
     @Singleton
+    fun provideIAuthClient(iAuthClient: IAuthClient): IAuthRepository = AuthRepositoryImpl(iAuthClient)
+
+    @Provides
+    @Singleton
     fun provideCustomHeroesCatalogClient(retrofit: Retrofit): ICatalogClient =
         retrofit.create()
+
+    @Provides
+    @Singleton
+    fun provideICatalogClient(iCatalogClient: ICatalogClient): ICatalogRepository = CatalogRepositoryImpl(iCatalogClient)
 
     @Provides
     @Singleton
@@ -59,12 +74,19 @@ object RemoteModule {
 
     @Provides
     @Singleton
-    fun provideCustomHeroesUserClient(retrofit: Retrofit): IUserClient =
-        retrofit.create()
+    fun provideIOrderClient(iOrderClient: IOrderClient, dataStoreManager: DataStoreManager): IOrderRepository = OrderRepositoryImpl(iOrderClient, dataStoreManager)
 
 
     @Provides
     @Singleton
-    fun provideIAuthClient(iAuthClient: IAuthClient): IAuthRepository = AuthRepositoryImpl(iAuthClient)
+    fun provideCustomHeroesUserClient(retrofit: Retrofit): IUserClient =
+        retrofit.create()
+
+    @Provides
+    @Singleton
+    fun provideIUserClient(iUserClient: IUserClient): IUserRepository = UserRepositoryImpl(iUserClient)
+
+
+
 
 }

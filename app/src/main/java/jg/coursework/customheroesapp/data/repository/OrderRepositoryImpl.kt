@@ -15,6 +15,7 @@ class OrderRepositoryImpl @Inject constructor(
     private val dataStoreManager: DataStoreManager
 ) : BaseDataSource(), IOrderRepository {
 
+    // TODO - переделать, просто передавать сюда заказ объектом адекватным
     override suspend fun createOrder()  {
         val order = dataStoreManager.getBasket().first()
         if(order != null) {
