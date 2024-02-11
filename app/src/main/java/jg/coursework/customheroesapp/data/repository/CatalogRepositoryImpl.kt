@@ -9,14 +9,14 @@ import javax.inject.Singleton
 
 @Singleton
 class CatalogRepositoryImpl @Inject constructor(
-    private val ICatalogClient: ICatalogClient,
+    private val iCatalogClient: ICatalogClient,
 ) : BaseDataSource(), ICatalogRepository {
 
     override suspend fun getCatalog(): Resource<List<CatalogDTO>> {
-        return safeApiCall {ICatalogClient.getCatalog()}
+        return safeApiCall {iCatalogClient.getCatalog()}
     }
 
     override suspend fun getFigureById(id: Int): Resource<List<CatalogDTO>> {
-        return safeApiCall{ICatalogClient.getFigureById(id)}
+        return safeApiCall{iCatalogClient.getFigureById(id)}
     }
 }

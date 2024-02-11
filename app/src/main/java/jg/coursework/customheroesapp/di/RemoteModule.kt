@@ -10,6 +10,8 @@ import jg.coursework.customheroesapp.data.remote.IAuthClient
 import jg.coursework.customheroesapp.data.remote.ICatalogClient
 import jg.coursework.customheroesapp.data.remote.IOrderClient
 import jg.coursework.customheroesapp.data.remote.IUserClient
+import jg.coursework.customheroesapp.data.repository.AuthRepositoryImpl
+import jg.coursework.customheroesapp.domain.repository.IAuthRepository
 import jg.coursework.customheroesapp.util.Constant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -60,5 +62,9 @@ object RemoteModule {
     fun provideCustomHeroesUserClient(retrofit: Retrofit): IUserClient =
         retrofit.create()
 
+
+    @Provides
+    @Singleton
+    fun provideIAuthClient(iAuthClient: IAuthClient): IAuthRepository = AuthRepositoryImpl(iAuthClient)
 
 }

@@ -41,6 +41,4 @@ class TokenManager(private val appContext: Context) {
             tokenStore[REFRESH_TOKEN]
         }
     }
-
-
 }

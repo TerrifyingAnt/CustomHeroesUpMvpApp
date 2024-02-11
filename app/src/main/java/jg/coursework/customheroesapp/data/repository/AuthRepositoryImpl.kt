@@ -11,14 +11,14 @@ import javax.inject.Singleton
 
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
-    private val IAuthClient: IAuthClient
+    private val iAuthClient: IAuthClient
 ) : BaseDataSource(), IAuthRepository {
 
     override suspend fun login(loginRequestDTO: LoginRequestDTO): Resource<AuthResponseDTO> {
-        return safeApiCall {IAuthClient.login(loginRequestDTO) }
+        return safeApiCall {iAuthClient.login(loginRequestDTO) }
     }
 
     override suspend fun register(registerRequestDTO: RegisterRequestDTO): Resource<AuthResponseDTO> {
-        return safeApiCall {IAuthClient.register(registerRequestDTO)}
+        return safeApiCall {iAuthClient.register(registerRequestDTO)}
     }
 }
