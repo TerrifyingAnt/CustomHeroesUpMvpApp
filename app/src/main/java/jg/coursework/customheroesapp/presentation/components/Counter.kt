@@ -31,7 +31,7 @@ import jg.coursework.customheroesapp.ui.theme.CustomHeroesOrange
 fun Counter(id: Int, price: Float, viewModel: CatalogViewModel = hiltViewModel()) {
     var count by remember { mutableStateOf(viewModel.basketCount) }
 
-    viewModel.checkIfInBasket(id)
+    viewModel.getCountInBasket(id)
 
     Column(Modifier.fillMaxHeight()) {
         Row(Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {

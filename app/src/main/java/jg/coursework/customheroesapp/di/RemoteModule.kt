@@ -11,14 +11,14 @@ import jg.coursework.customheroesapp.data.remote.IAuthClient
 import jg.coursework.customheroesapp.data.remote.ICatalogClient
 import jg.coursework.customheroesapp.data.remote.IOrderClient
 import jg.coursework.customheroesapp.data.remote.IUserClient
-import jg.coursework.customheroesapp.data.repository.AuthRepositoryImpl
-import jg.coursework.customheroesapp.data.repository.CatalogRepositoryImpl
-import jg.coursework.customheroesapp.data.repository.OrderRepositoryImpl
-import jg.coursework.customheroesapp.data.repository.UserRepositoryImpl
-import jg.coursework.customheroesapp.domain.repository.IAuthRepository
-import jg.coursework.customheroesapp.domain.repository.ICatalogRepository
-import jg.coursework.customheroesapp.domain.repository.IOrderRepository
-import jg.coursework.customheroesapp.domain.repository.IUserRepository
+import jg.coursework.customheroesapp.data.repository.remote.AuthRepositoryImpl
+import jg.coursework.customheroesapp.data.repository.remote.CatalogRepositoryImpl
+import jg.coursework.customheroesapp.data.repository.remote.OrderRepositoryImpl
+import jg.coursework.customheroesapp.data.repository.remote.UserRepositoryImpl
+import jg.coursework.customheroesapp.domain.repository.remote.IAuthRepository
+import jg.coursework.customheroesapp.domain.repository.remote.ICatalogRepository
+import jg.coursework.customheroesapp.domain.repository.remote.IOrderRepository
+import jg.coursework.customheroesapp.domain.repository.remote.IUserRepository
 import jg.coursework.customheroesapp.util.Constant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -74,7 +74,9 @@ object RemoteModule {
 
     @Provides
     @Singleton
-    fun provideIOrderClient(iOrderClient: IOrderClient, dataStoreManager: DataStoreManager): IOrderRepository = OrderRepositoryImpl(iOrderClient, dataStoreManager)
+    fun provideIOrderClient(iOrderClient: IOrderClient): IOrderRepository = OrderRepositoryImpl(
+        iOrderClient
+    )
 
 
     @Provides

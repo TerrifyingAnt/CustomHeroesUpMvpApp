@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import jg.coursework.customheroesapp.data.dto.CatalogDTO.CatalogDTO
-import jg.coursework.customheroesapp.presentation.components.AuthButton
+import jg.coursework.customheroesapp.presentation.components.CustomHeroesButton
 import jg.coursework.customheroesapp.presentation.components.Counter
 import jg.coursework.customheroesapp.presentation.screen.catalog.CatalogViewModel
 import jg.coursework.customheroesapp.ui.theme.CustomHeroesOrange
@@ -50,7 +50,6 @@ fun BasketScreen(navController: NavController, viewModel: CatalogViewModel = hil
     LaunchedEffect(basketState) {
         viewModel.getBasket()
 
-
         when (basketState.status) {
             Resource.Status.SUCCESS -> {
                 println("xd")
@@ -62,6 +61,7 @@ fun BasketScreen(navController: NavController, viewModel: CatalogViewModel = hil
             Resource.Status.LOADING -> {}
         }
     }
+
     Column() {
         if(basketList.isNotEmpty()) {
             LazyColumn(
@@ -74,7 +74,7 @@ fun BasketScreen(navController: NavController, viewModel: CatalogViewModel = hil
                 }
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                AuthButton(
+                CustomHeroesButton(
                     text = "Заказать",
                     backgroundColor = CustomHeroesOrange,
                     contentColor = Color.White,
@@ -104,7 +104,6 @@ fun BasketScreen(navController: NavController, viewModel: CatalogViewModel = hil
 
 @Composable
 fun BasketCard(navController: NavController, figureModel: CatalogDTO, viewModel: CatalogViewModel = hiltViewModel()){
-
 
     Surface(shape = RoundedCornerShape(10.dp), elevation = 10.dp, modifier = Modifier
         .padding(5.dp)

@@ -42,7 +42,6 @@ import jg.coursework.customheroesapp.presentation.screen.profile.ProfileScreen
 import jg.coursework.customheroesapp.ui.theme.CustomHeroesOrange
 import java.util.Locale
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainNavigation() {

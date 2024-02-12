@@ -1,21 +1,23 @@
 package jg.coursework.customheroesapp.presentation.screen.catalog
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jg.coursework.customheroesapp.data.dto.CatalogDTO.CatalogDTO
 import jg.coursework.customheroesapp.data.local.DataStoreManager
-import jg.coursework.customheroesapp.data.network_converters.toDomainListFiguresModel
+import jg.coursework.customheroesapp.data.converters.toDomainListFiguresModel
+import jg.coursework.customheroesapp.domain.model.BasketItemModel
 import jg.coursework.customheroesapp.domain.model.FigureModel
 import jg.coursework.customheroesapp.domain.model.TagModel
-import jg.coursework.customheroesapp.domain.repository.ICatalogRepository
-import jg.coursework.customheroesapp.domain.repository.IOrderRepository
+import jg.coursework.customheroesapp.domain.repository.local.IBasketRepository
+import jg.coursework.customheroesapp.domain.repository.remote.ICatalogRepository
+import jg.coursework.customheroesapp.domain.repository.remote.IOrderRepository
 import jg.coursework.customheroesapp.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +25,8 @@ import javax.inject.Inject
 class CatalogViewModel @Inject constructor(
     private val customHeroesCatalogRepository: ICatalogRepository,
     private val customHeroesOrderRepository: IOrderRepository,
-    private val dataStoreManager: DataStoreManager
+    private val dataStoreManager: DataStoreManager,
+    private val iBasketRepository: IBasketRepository
 
 ): ViewModel() {
 
@@ -48,23 +51,11 @@ class CatalogViewModel @Inject constructor(
         _catalogState.value = catalogResponse
         val listFiguresDTO = catalogResponse.data ?: return@launch
         val mainListFigures = listFiguresDTO.toDomainListFiguresModel()
-        for (item in mainListFigures) {
-            if (containFigure(item)) {
-                for (figure in figureList.value) {
-                    if (figure.id == item.id) {
-                        if (!containTag(item.tags[0], figure.tags))
-                            figure.tags.add(item.tags[0])
-                    }
-                }
-            } else {
-                if (figureList.value.isEmpty()) {
-                    figureList.value = listOf(item)
-                } else {
-                    figureList.value = figureList.value + item
-                }
-            }
-        }
-        println(figureList.value)
+
+        updateFigureTags(mainListFigures, figureList)
+
+        // TODO - убрать логи
+        Log.d("FIGURE_LIST", figureList.value.toString())
     }
 
 
@@ -74,113 +65,38 @@ class CatalogViewModel @Inject constructor(
         _figureDetailState.value = catalogResponse
         val figureByIdDTO = catalogResponse.data?: return@launch
         val figureDomainModelById = figureByIdDTO.toDomainListFiguresModel()
-        for(item in figureDomainModelById) {
-            if (containFigure(item)) {
-                for(figure in figureDetailList.value) {
-                    if(figure.id == item.id) {
-                        if(!containTag(item.tags[0], figure.tags))
-                            figure.tags.add(item.tags[0])
-                    }
-                }
-            }
-            else {
-                if(figureDetailList.value.isEmpty()) {
-                    figureDetailList.value = listOf(item)
-                }
-                else {
-                    figureDetailList.value = figureDetailList.value + item
-                }
-            }
-        }
-        // TODO - удалить логи
+
+        updateFigureTags(figureDomainModelById, figureDetailList)
+
+        // TODO - убрать логи
         Log.d("FIGURE_LIST", figureDetailList.value.toString())
 
     }
 
-    fun checkIfInBasket(id: Int) = viewModelScope.launch {
-        var tempLogic = false
-        val basket = dataStoreManager.getBasket().first()
-        var number = ""
-
-        if(basket != null) {
-            // концепт такой, что сначала идет f{id}x{count};
-            if(basket.indexOf("f{$id}") != -1) {
-                for(i in basket?.indexOf("f{$id}")?.rangeTo(basket.length)!!) {
-                    if(i < basket.length && basket[i] != ';' ) {
-                        if (tempLogic) {
-                            number += basket[i]
-                        }
-                        if (basket[i] == 'x') {
-                            tempLogic = true
-                        }
-                    }
-                    else
-                        break
-                }
-                basketCount.value = number.toInt()
-            }
+    fun getCountInBasket(id: Int) = viewModelScope.launch {
+        val model = iBasketRepository.getItemFromBasketByModelId(id)
+        if (model != null) {
+            basketCount.value = model.count
         }
-        basketCount.value = 0
+        else {
+            basketCount.value = 0
+        }
     }
 
     fun addToBasket(id: Int, count: Int) = viewModelScope.launch {
-        var basket = dataStoreManager.getBasket().first()
-        if(basket != null) {
-            if(basket.indexOf("f{$id}x${count-1}") != -1) {
-                basket = basket.replace("f{$id}x${count-1}", "f{$id}x${count}")
-                dataStoreManager.setBasket(basket)
-            }
-            else {
-                if(basket == "") {
-                    dataStoreManager.setBasket("f{$id}x${count}")
-                }
-                else {
-                    dataStoreManager.setBasket("$basket;f{$id}x${count}")
-                }
-            }
-        }
-        else {
-            dataStoreManager.setBasket("f{$id}x${count}")
-        }
+        iBasketRepository.insertBasketItemEntity(BasketItemModel(id, count))
     }
 
     fun removeFromBasket(id: Int, count: Int) = viewModelScope.launch {
-        var basket = dataStoreManager.getBasket().first()
-        if(basket != null) {
-            if(basket.indexOf("f{$id}x${count+1}") != -1) {
-                if(count == 0) {
-                    if(basket.indexOf(";f{$id}x${count+1}") != -1)
-                        basket = basket.replace(";f{$id}x${count+1}", "")
-                    else {
-                        basket = basket.replace("f{$id}x${count+1};", "")
-                        basket = basket.replace("f{$id}x${count+1}", "")
-                    }
-                }
-                else
-                    basket = basket.replace("f{$id}x${count+1}", "f{$id}x${count}")
-                dataStoreManager.setBasket(basket)
-            }
-            else {
-                if(basket == "") {
-                    dataStoreManager.setBasket("f{$id}x${count}")
-                }
-                else {
-                    dataStoreManager.setBasket("$basket;f{$id}x${count}")
-                }
-            }
-        }
-        else {
-            dataStoreManager.setBasket("f{$id}x${count}")
-        }
+        iBasketRepository.deleteBasketItemEntityByModelId(id)
     }
 
     fun getBasket() = viewModelScope.launch {
-        val basket = dataStoreManager.getBasket().first()
+        val currentBasketList = iBasketRepository.getAllFromBasket()
         val catalogList = mutableListOf<CatalogDTO>()
-        if(basket != "") {
-            val splitBasket = basket?.split(";") ?: return@launch
-            for(item in splitBasket) {
-                val id = item.substring(item.indexOf("{") + 1, item.indexOf("}")).toInt()
+        if(currentBasketList.isNotEmpty()) {
+            currentBasketList.forEach {item ->
+                val id = item.modelId
                 val response = customHeroesCatalogRepository.getFigureById(id)
                 val figure = response.data?.get(0) ?: return@launch
                 catalogList.add(figure)
@@ -191,24 +107,27 @@ class CatalogViewModel @Inject constructor(
     }
 
     fun createOrder() = viewModelScope.launch {
-        customHeroesOrderRepository.createOrder()
-        dataStoreManager.setBasket("")
+        val currentBasket = iBasketRepository.getAllFromBasket()
+        customHeroesOrderRepository.createOrder(currentBasket)
+        iBasketRepository.clearBasket()
     }
 
-
-    private fun containFigure(figureModel: FigureModel): Boolean {
-        for(item in figureList.value) {
-            if (item.id == figureModel.id)
-                return true
+    private fun updateFigureTags(figureList: List<FigureModel>, figureListState: MutableState<List<FigureModel>>) {
+        figureList.forEach { item ->
+            if (figureListState.value.map {it.id}.contains(item.id)) {
+                figureListState.value.forEach { figure ->
+                    if (figure.id == item.id) {
+                        if (!figure.tags.contains(item.tags[0]))
+                            figure.tags.add(item.tags[0])
+                    }
+                }
+            } else {
+                if (figureListState.value.isEmpty()) {
+                    figureListState.value = listOf(item)
+                } else {
+                    figureListState.value = figureListState.value + item
+                }
             }
-        return false
-    }
-
-    private fun containTag(tagModel: TagModel, tags: MutableList<TagModel>): Boolean {
-        for(tag in tags) {
-            if (tagModel == tag)
-                return true
         }
-        return false
     }
 }

@@ -27,14 +27,10 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         setContent {
-
             val navController = rememberNavController()
             val systemUiController: SystemUiController = rememberSystemUiController()
             systemUiController.isSystemBarsVisible = false
-
-
             MainNavigation()
-
         }
     }
 }

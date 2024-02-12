@@ -35,7 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.minio.GetObjectArgs
-import jg.coursework.customheroesapp.presentation.components.AuthButton
+import jg.coursework.customheroesapp.presentation.components.CustomHeroesButton
 import jg.coursework.customheroesapp.presentation.components.Counter
 import jg.coursework.customheroesapp.presentation.components.StarRating
 import jg.coursework.customheroesapp.presentation.screen.catalog.CatalogViewModel
@@ -57,7 +57,7 @@ fun FigureDetailScreen(figureModel: Int, viewModel: CatalogViewModel = hiltViewM
     LaunchedEffect(figureDetailState) {
         imageList.value = emptyList()
         viewModel.getFigureById(figureModel)
-        viewModel.checkIfInBasket(figureModel)
+        viewModel.getCountInBasket(figureModel)
         when (figureDetailState.status) {
             Resource.Status.SUCCESS -> {
                 loading = false
@@ -176,7 +176,7 @@ fun FigureDetailScreen(figureModel: Int, viewModel: CatalogViewModel = hiltViewM
                     horizontalArrangement = Arrangement.Center
                 ) {
                     if(temp.value <= 0) {
-                        AuthButton(
+                        CustomHeroesButton(
                             text = "Купить",
                             backgroundColor = CustomHeroesOrange,
                             contentColor = Color.White,

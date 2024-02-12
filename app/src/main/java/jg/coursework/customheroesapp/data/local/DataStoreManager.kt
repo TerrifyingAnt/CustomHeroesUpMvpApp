@@ -130,18 +130,5 @@ class DataStoreManager @Inject constructor(
         return user
     }
 
-    // TODO - в другой класс, а потом в бд вообще перенсти бд корзину
-    suspend fun setBasket(basket: String) {
-        appContext.dataStore.edit { localStorage ->
-            localStorage[BASKET] = basket
-        }
-    }
-
-    fun getBasket(): Flow<String?> {
-        return appContext.dataStore.data.map { localStorage ->
-            localStorage[BASKET]
-        }
-    }
-
 
 }

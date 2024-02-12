@@ -1,8 +1,9 @@
-package jg.coursework.customheroesapp.data.repository
+package jg.coursework.customheroesapp.data.repository.remote
 
 import jg.coursework.customheroesapp.data.dto.CatalogDTO.CatalogDTO
 import jg.coursework.customheroesapp.data.remote.ICatalogClient
-import jg.coursework.customheroesapp.domain.repository.ICatalogRepository
+import jg.coursework.customheroesapp.data.repository.BaseDataSource
+import jg.coursework.customheroesapp.domain.repository.remote.ICatalogRepository
 import jg.coursework.customheroesapp.util.Resource
 import javax.inject.Inject
 import javax.inject.Singleton

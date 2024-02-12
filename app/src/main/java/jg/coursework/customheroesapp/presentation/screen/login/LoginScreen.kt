@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import jg.coursework.customheroesapp.R
-import jg.coursework.customheroesapp.presentation.components.AuthButton
+import jg.coursework.customheroesapp.presentation.components.CustomHeroesButton
 import jg.coursework.customheroesapp.presentation.components.TextEntryModule
 import jg.coursework.customheroesapp.presentation.screen.profile.ProfileViewModel
 import jg.coursework.customheroesapp.ui.theme.CustomHeroesOrange
@@ -246,7 +246,7 @@ fun LoginContainer(
                 } else PasswordVisualTransformation(),
                 keyboardType = KeyboardType.Password
             )
-            AuthButton(
+            CustomHeroesButton(
                 text = "Войти",
                 backgroundColor = CustomHeroesOrange,
                 contentColor = Color.White,

@@ -11,8 +11,8 @@ import jg.coursework.customheroesapp.data.dto.LoginDTO.LoginRequestDTO
 import jg.coursework.customheroesapp.data.local.DataStoreManager
 import jg.coursework.customheroesapp.data.local.TokenManager
 import jg.coursework.customheroesapp.domain.model.LoginInputValidationType
-import jg.coursework.customheroesapp.domain.repository.IAuthRepository
-import jg.coursework.customheroesapp.domain.repository.IUserRepository
+import jg.coursework.customheroesapp.domain.repository.remote.IAuthRepository
+import jg.coursework.customheroesapp.domain.repository.remote.IUserRepository
 import jg.coursework.customheroesapp.domain.use_case.ValidateLoginInputUseCase
 import jg.coursework.customheroesapp.presentation.state.LoginState
 import jg.coursework.customheroesapp.util.Resource

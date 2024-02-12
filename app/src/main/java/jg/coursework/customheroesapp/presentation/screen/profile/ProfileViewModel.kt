@@ -9,8 +9,9 @@ import jg.coursework.customheroesapp.data.dto.OrderDTO.OrderItemDTO
 import jg.coursework.customheroesapp.data.dto.User
 import jg.coursework.customheroesapp.data.local.DataStoreManager
 import jg.coursework.customheroesapp.data.local.TokenManager
-import jg.coursework.customheroesapp.domain.repository.IOrderRepository
-import jg.coursework.customheroesapp.domain.repository.IUserRepository
+import jg.coursework.customheroesapp.domain.repository.local.IBasketRepository
+import jg.coursework.customheroesapp.domain.repository.remote.IOrderRepository
+import jg.coursework.customheroesapp.domain.repository.remote.IUserRepository
 import jg.coursework.customheroesapp.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +23,8 @@ class ProfileViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
     private val tokenManager: TokenManager,
     private val customHeroesUserRepository: IUserRepository,
-    private val customHeroesOrderRepository: IOrderRepository
+    private val customHeroesOrderRepository: IOrderRepository,
+    private val iBasketRepository: IBasketRepository
 ): ViewModel() {
 
 
@@ -57,7 +59,7 @@ class ProfileViewModel @Inject constructor(
 
     fun logout() = viewModelScope.launch {
         dataStoreManager.setUserId(-1)
-        dataStoreManager.setBasket("")
+        iBasketRepository.clearBasket()
         tokenManager.setAccessToken("")
         tokenManager.setRefreshToken("")
 

@@ -1,26 +1,24 @@
-package jg.coursework.customheroesapp.data.repository
+package jg.coursework.customheroesapp.data.repository.remote
 
+import jg.coursework.customheroesapp.data.converters.toCringeStringFormat
 import jg.coursework.customheroesapp.data.dto.OrderDTO.OrderItemDTO
-import jg.coursework.customheroesapp.data.local.DataStoreManager
 import jg.coursework.customheroesapp.data.remote.IOrderClient
-import jg.coursework.customheroesapp.domain.repository.IOrderRepository
+import jg.coursework.customheroesapp.data.repository.BaseDataSource
+import jg.coursework.customheroesapp.domain.model.BasketItemModel
+import jg.coursework.customheroesapp.domain.repository.remote.IOrderRepository
 import jg.coursework.customheroesapp.util.Resource
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class OrderRepositoryImpl @Inject constructor(
     private val customHeroesOrderRepository: IOrderClient,
-    private val dataStoreManager: DataStoreManager
 ) : BaseDataSource(), IOrderRepository {
 
     // TODO - переделать, просто передавать сюда заказ объектом адекватным
-    override suspend fun createOrder()  {
-        val order = dataStoreManager.getBasket().first()
-        if(order != null) {
-            return customHeroesOrderRepository.createOrder(order)
-        }
+    override suspend fun createOrder(currentBasket: List<BasketItemModel>)  {
+        val order = currentBasket.toCringeStringFormat()
+        return customHeroesOrderRepository.createOrder(order)
     }
 
     override suspend fun getOrders(): Resource<List<OrderItemDTO>> {

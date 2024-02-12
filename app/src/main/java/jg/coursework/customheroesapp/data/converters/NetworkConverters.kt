@@ -1,4 +1,4 @@
-package jg.coursework.customheroesapp.data.network_converters
+package jg.coursework.customheroesapp.data.converters
 
 import jg.coursework.customheroesapp.data.dto.CatalogDTO.CatalogDTO
 import jg.coursework.customheroesapp.domain.model.FigureModel

@@ -1,4 +1,4 @@
-package jg.coursework.customheroesapp.domain.repository
+package jg.coursework.customheroesapp.domain.repository.remote
 
 import jg.coursework.customheroesapp.data.dto.AuthResponseDTO
 import jg.coursework.customheroesapp.data.dto.LoginDTO.LoginRequestDTO

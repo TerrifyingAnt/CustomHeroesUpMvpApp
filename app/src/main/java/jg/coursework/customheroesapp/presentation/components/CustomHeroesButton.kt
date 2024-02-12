@@ -19,7 +19,7 @@ import jg.coursework.customheroesapp.ui.theme.CustomHeroesGray
 import jg.coursework.customheroesapp.ui.theme.CustomHeroesOrange
 
 @Composable
-fun AuthButton(
+fun CustomHeroesButton(
     text: String,
     backgroundColor: Color,
     contentColor: Color,
@@ -59,7 +59,7 @@ fun AuthButton(
 @Preview(showBackground = true)
 @Composable
 fun AuthButtonPreview() {
-    AuthButton(
+    CustomHeroesButton(
         text = "Войти",
         backgroundColor = CustomHeroesOrange,
         contentColor = CustomHeroesGray,

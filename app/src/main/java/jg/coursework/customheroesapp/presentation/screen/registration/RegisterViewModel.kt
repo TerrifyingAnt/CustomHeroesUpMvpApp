@@ -11,8 +11,8 @@ import jg.coursework.customheroesapp.data.dto.RegisterDTO.RegisterRequestDTO
 import jg.coursework.customheroesapp.data.local.DataStoreManager
 import jg.coursework.customheroesapp.data.local.TokenManager
 import jg.coursework.customheroesapp.domain.model.RegisterInputValidationType
-import jg.coursework.customheroesapp.domain.repository.IAuthRepository
-import jg.coursework.customheroesapp.domain.repository.IUserRepository
+import jg.coursework.customheroesapp.domain.repository.remote.IAuthRepository
+import jg.coursework.customheroesapp.domain.repository.remote.IUserRepository
 import jg.coursework.customheroesapp.domain.use_case.ValidateRegisterInputUseCase
 import jg.coursework.customheroesapp.presentation.state.RegisterState
 import jg.coursework.customheroesapp.util.Resource

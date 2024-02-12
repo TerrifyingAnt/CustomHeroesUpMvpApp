@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import jg.coursework.customheroesapp.AuthActivity
 import jg.coursework.customheroesapp.data.dto.OrderDTO.OrderItemDTO
-import jg.coursework.customheroesapp.presentation.components.AuthButton
+import jg.coursework.customheroesapp.presentation.components.CustomHeroesButton
 import jg.coursework.customheroesapp.ui.theme.CustomHeroesOrange
 import jg.coursework.customheroesapp.util.Resource
 
@@ -71,7 +71,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel())
 
         Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                AuthButton(
+                CustomHeroesButton(
                     text = "Выйти",
                     backgroundColor = CustomHeroesOrange,
                     contentColor = Color.White,

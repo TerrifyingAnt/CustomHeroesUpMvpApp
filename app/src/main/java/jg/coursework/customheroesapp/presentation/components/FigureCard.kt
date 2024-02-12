@@ -103,7 +103,7 @@ fun FigureCard(figureModel: FigureModel, navigateToFigureDetail: (FigureModel) -
                 )
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                AuthButton(
+                CustomHeroesButton(
                     text = "Подробнее",
                     backgroundColor = CustomHeroesOrange,
                     contentColor = Color.White,

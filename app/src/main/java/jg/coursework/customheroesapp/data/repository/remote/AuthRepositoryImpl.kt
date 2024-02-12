@@ -1,10 +1,11 @@
-package jg.coursework.customheroesapp.data.repository
+package jg.coursework.customheroesapp.data.repository.remote
 
 import jg.coursework.customheroesapp.data.dto.AuthResponseDTO
 import jg.coursework.customheroesapp.data.dto.LoginDTO.LoginRequestDTO
 import jg.coursework.customheroesapp.data.dto.RegisterDTO.RegisterRequestDTO
 import jg.coursework.customheroesapp.data.remote.IAuthClient
-import jg.coursework.customheroesapp.domain.repository.IAuthRepository
+import jg.coursework.customheroesapp.data.repository.BaseDataSource
+import jg.coursework.customheroesapp.domain.repository.remote.IAuthRepository
 import jg.coursework.customheroesapp.util.Resource
 import javax.inject.Inject
 import javax.inject.Singleton
